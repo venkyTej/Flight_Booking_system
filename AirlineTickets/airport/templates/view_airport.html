@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Airport List</h2>
+    <a href="{% url 'airport:create' %}" class="btn btn-primary mb-3">Add New Airport</a>
+    <div class="row">
+        {% for airport in airports %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                {% if airport.image %}
+                <img src="{{ airport.image.url }}" class="card-img-top" alt="{{ airport.name }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ airport.name }}</h5>
+                    <p class="card-text">{{ airport.city }}, {{ airport.state }}, {{ airport.country }}</p>
+                    <p class="card-text">Contact: {{ airport.contact }}</p>
+                    <p class="card-text">Terminals: {{ airport.terminals }}</p>
+                    <p class="card-text"><small class="text-muted">Created: {{ airport.created_at }}</small></p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
