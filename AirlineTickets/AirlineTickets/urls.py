@@ -7,7 +7,8 @@ from django.views.generic import RedirectView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('airport/', include('airport.urls')),  # note singular 'airport/'
-    path('', RedirectView.as_view(url='/airport/', permanent=False)),  # redirect root to /airport/
+    path('', RedirectView.as_view(url='/airport/', permanent=False)),
+    path('flights/', include('flights.urls', namespace='flights')) # flights
 ]
 
 if settings.DEBUG:
