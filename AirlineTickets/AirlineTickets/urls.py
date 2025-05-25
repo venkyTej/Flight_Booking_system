@@ -8,7 +8,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('airport/', include('airport.urls')),  # note singular 'airport/'
     path('', RedirectView.as_view(url='/airport/', permanent=False)),
-    path('flights/', include('flights.urls', namespace='flights')) # flights
+    path('flights/', include('flights.urls', namespace='flights')),
+    path('booking/', include(('booking.urls', 'booking'), namespace='booking')),
+ # flights
 ]
 
 if settings.DEBUG:

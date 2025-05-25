@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <div class="card p-4 shadow-lg">
+        <h4 class="mb-3 text-success">Booking Confirmed!</h4>
+        <p><strong>Name:</strong> {{ booking.name }}</p>
+        <p><strong>Email:</strong> {{ booking.email }}</p>
+        <p><strong>Trip Type:</strong> {{ booking.get_trip_type_display }}</p>
+        <p><strong>Flight:</strong> {{ flight.name }} ({{ flight.flight_number }})</p>
+        <p><strong>Flight Type:</strong> {{ flight.is_international|yesno:"International,Domestic" }}</p>
+        <p><strong>From:</strong> {{ flight.departure_city }} → <strong>To:</strong> {{ flight.arrival_city }}</p>
+        {% if booking.trip_type == 'round' and booking.return_flight %}
+            <p><strong>Return Flight:</strong> {{ booking.return_flight.name }} ({{ booking.return_flight.flight_number }})</p>
+        {% endif %}
+        <p><strong>Seats Booked:</strong> {{ booking.seats_booked }}</p>
+        <p><strong>Remaining Seats:</strong> {{ flight.available_seats }}</p>
+        <p><strong>Booked At:</strong> {{ booking.booked_at|date:"F d, Y, g:i a" }}</p>
+        <a href="{% url 'flights:flight_list' %}" class="btn btn-secondary mt-3">Back to Flights</a>
+    </div>
+</div>
+{% endblock %}

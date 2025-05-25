@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h3>Book Flight: {{ flight.name }} ({{ flight.flight_number }})</h3>
+    <p><strong>Type:</strong> {{ flight.is_international|yesno:"International,Domestic" }}</p>
+    <p><strong>From:</strong> {{ flight.departure_city }} → <strong>To:</strong> {{ flight.arrival_city }}</p>
+    <p><strong>Base Price:</strong> ${{ base_price }}</p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            {{ form.name.label_tag }} {{ form.name }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.email.label_tag }} {{ form.email }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.seats_booked.label_tag }} {{ form.seats_booked }}
+        </div>
+
+        <div class="mb-3">
+            <label>Trip Type</label><br>
+            {{ form.trip_type }}
+        </div>
+
+        <div class="mb-3">
+            <label for="id_return_flight">Return Flight</label>
+            <select name="return_flight" id="id_return_flight" class="form-select">
+                <option value="">---------</option>
+                {% for f in form.fields.return_flight.queryset %}
+                    <option value="{{ f.id }}" data-price="{{ f.price }}">
+                        {{ f.name }} ({{ f.departure_city }} → {{ f.arrival_city }}) - ${{ f.price }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <p><strong>Total Price:</strong> $<span id="total_price">0.00</span></p>
+        </div>
+
+        <button type="submit" class="btn btn-success">Book Flight</button>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Safely parse base_price as float in JS
+        const basePrice = parseFloat("{{ base_price }}");
+        const returnFlightSelect = document.getElementById('id_return_flight');
+        const seatsInput = document.getElementById('id_seats_booked');
+        const tripTypeRadios = document.querySelectorAll('input[name="trip_type"]');
+        const totalPriceElement = document.getElementById('total_price');
+
+        function calculateTotal() {
+            const seats = parseInt(seatsInput.value) || 0;
+            let total = basePrice * seats;
+
+            const selectedTripType = document.querySelector('input[name="trip_type"]:checked')?.value;
+            if (selectedTripType === 'round') {
+                const selectedOption = returnFlightSelect.options[returnFlightSelect.selectedIndex];
+                const returnPrice = parseFloat(selectedOption.getAttribute('data-price')) || 0;
+                total += returnPrice * seats;
+            }
+
+            totalPriceElement.textContent = total.toFixed(2);
+        }
+
+        seatsInput.addEventListener('input', calculateTotal);
+        returnFlightSelect.addEventListener('change', calculateTotal);
+        tripTypeRadios.forEach(radio => radio.addEventListener('change', calculateTotal));
+
+        calculateTotal();  // Initial calculation on page load
+    });
+</script>
+{% endblock %}

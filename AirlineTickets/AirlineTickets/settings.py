@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'mainapp',
     'airport',
     'flights',
+    'booking',
 ]
 
 MIDDLEWARE = [
