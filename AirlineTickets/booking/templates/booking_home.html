@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Available Flights</h2>
+
+  <!-- Search Flights Form -->
+  <form method="GET" action="{% url 'booking:booking_home' %}" class="mb-4">
+    <input
+      type="text"
+      name="q"
+      placeholder="Search by departure or arrival city"
+      value="{{ request.GET.q|default_if_none:'' }}"
+      class="form-control"
+    />
+    <button type="submit" class="btn btn-primary mt-2">Search Flights</button>
+  </form>
+
+  {% if flights %}
+    <div class="row">
+      {% for flight in flights %}
+        <div class="col-md-4 mb-4">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">{{ flight.name }} ({{ flight.flight_number }})</h5>
+              <p class="card-text mb-1">
+                <strong>Route:</strong> {{ flight.departure_city }} → {{ flight.arrival_city }}
+              </p>
+              <p class="card-text mb-3">
+                <strong>Price:</strong> ${{ flight.price }}
+              </p>
+
+              <div class="mt-auto d-flex justify-content-between">
+                <!-- Book Button -->
+                <a href="{% url 'booking:book_flight' flight.id %}" class="btn btn-success btn-sm">
+                  Book
+                </a>
+
+                <!-- Payment Button -->
+                <a href="" class="btn btn-warning btn-sm">
+                  Pay
+                </a>
+
+                <!-- Edit Button -->
+                <a href="{% url 'booking:edit_booking' flight.id %}" class="btn btn-info btn-sm">
+                  Edit
+                </a>
+
+                <!-- cancel Button -->
+               <form method="POST" action="{% url 'booking:cancel_booking' flight.id %}" style="display:inline;">
+               {% csrf_token %}
+           <button type="submit">Cancel</button>
+</form>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>No flights available at the moment.</p>
+  {% endif %}
+</div>
+{% endblock %}

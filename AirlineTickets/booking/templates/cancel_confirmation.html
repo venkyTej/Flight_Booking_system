@@ -1,0 +1,10 @@
+
+<h2>Cancel Booking</h2>
+<p>Are you sure you want to cancel your booking for {{ booking.flight.flight_number }}?</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Yes, Cancel</button>
+    <a href="{% url 'booking_list' %}">No, Go Back</a>
+</form>
+
