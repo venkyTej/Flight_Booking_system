@@ -39,3 +39,17 @@ class Booking(models.Model):
                 self.return_flight.save()
 
             self.save()
+
+            # booking/models.py
+            # booking/models.py
+
+
+    
+    is_paid = models.BooleanField(default=False)
+
+
+
+
+    
+         
+
