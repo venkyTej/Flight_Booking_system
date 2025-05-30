@@ -9,7 +9,7 @@ class Flights(models.Model):
     ]
 
     name = models.CharField(max_length=100)
-    flight_number = models.CharField(max_length=20, unique=True)
+    flight_number = models.CharField(max_length=20)
     airline = models.CharField(max_length=100)
     departure_city = models.CharField(max_length=100)
     arrival_city = models.CharField(max_length=100)
@@ -23,6 +23,7 @@ class Flights(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Scheduled')
     image = models.ImageField(upload_to='flight_images/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    category = models.CharField(max_length=50, default='Economy')  # or add choices if needed
 
     def __str__(self):
         return f"{self.flight_number} - {self.name}"

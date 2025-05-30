@@ -3,9 +3,9 @@
 {% block content %}
 <div class="container mt-4">
     <h2 class="mb-4">Flight List</h2>
-    <a href="{% url 'flights:create' %}" class="btn btn-primary mb-3">Add New Flight</a>
+    <a href="{% url 'flights:create' %}" class="btn btn-primary mb-4">Add New Flight</a>
 
-    {% for flight in flights %}
+    {% for flight in flight %}
     <div class="card border p-3 mb-4" style="max-width: 600px;">
 
         {% if flight.image %}

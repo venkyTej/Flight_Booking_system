@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h3>Booking Details</h3>
+    <p><strong>Passenger Name:</strong> {{ booking.passenger_name }}</p>
+    <p><strong>Flight:</strong> {{ booking.flight.name }}</p>
+    <p><strong>Trip:</strong> {{ booking.get_trip_type_display }}</p>
+    <p><strong>Category:</strong> {{ booking.get_category_display }}</p>
+    <p><strong>Total Price:</strong> ${{ booking.total_price }}</p>
+    <p><strong>Passenger Number:</strong> {{ booking.passenger_number }}</p>
+    <a href="#" class="btn btn-success">Pay Now</a>
+    <a href="{% url 'cancel_booking' booking.id %}" class="btn btn-danger">Cancel Booking</a>
+</div>
+{% endblock %}

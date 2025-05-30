@@ -6,11 +6,15 @@ from django.views.generic import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('airport/', include('airport.urls')),  # note singular 'airport/'
+    path('', include('airport.urls')),  # note singular 'airport/'
     path('', RedirectView.as_view(url='/airport/', permanent=False)),
-    path('flights/', include('flights.urls', namespace='flights')),
+    path('flights/', include('flights.urls', namespace='flights')),# flights 
+    path('booking/', include('booking.urls')),
+        
+
+
     
- # flights
+ 
 ]
 
 if settings.DEBUG:

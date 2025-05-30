@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Your Bookings</h2>
+    {% for booking in bookings %}
+        <div class="card mb-3 p-3">
+            <h5>{{ booking.passenger_name }}</h5>
+            <p>Flight: {{ booking.flight.name }} | Seats: {{ booking.num_seats }}</p>
+            <p>Total: ${{ booking.total_price }}</p>
+            <a href="{% url 'booking_detail' booking.id %}" class="btn btn-info btn-sm">View</a>
+            <a href="{% url 'booking:cancel_booking' booking.id %}" class="btn btn-danger btn-sm">Cancel</a>
+        </div>
+    {% empty %}
+        <p>No bookings found.</p>
+    {% endfor %}
+</div>
+{% endblock %}

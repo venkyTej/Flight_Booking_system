@@ -1,27 +1,36 @@
-# booking/forms.py
 from django import forms
-from .models import Booking, Flights
+from .models import Booking
+from flights.models import Flights
 
 class BookingForm(forms.ModelForm):
-    trip_type = forms.ChoiceField(
-        choices=[('single', 'Single Trip'), ('round', 'Round Trip')],
-        widget=forms.RadioSelect
-    )
-    return_flight = forms.ModelChoiceField(
-        queryset=Flights.objects.none(),
-        required=False
-    )
-
     class Meta:
         model = Booking
-        fields = ['name', 'email', 'seats_booked', 'trip_type', 'return_flight']
+        fields = [
+            'passenger_name', 'aadhar_number', 'email', 
+            'flight', 'num_seats'
+        ]
+        widgets = {
+            'passenger_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'aadhar_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            # 'confirm_email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'flight': forms.Select(attrs={'class': 'form-control', 'id': 'flight-select'}),
+            'num_seats': forms.NumberInput(attrs={'class': 'form-control', 'min': 1}),
+        }
 
-    def __init__(self, *args, **kwargs):
-        current_flight = kwargs.pop('current_flight', None)
-        super().__init__(*args, **kwargs)
-        if current_flight:
-            self.fields['return_flight'].queryset = Flights.objects.filter(
-                departure_city=current_flight.arrival_city,
-                is_international=current_flight.is_international
-            )
-        self.fields['seats_booked'].widget.attrs.update({'id': 'id_seats_booked'})
+    def clean(self):
+        cleaned_data = super().clean()
+        email = cleaned_data.get("email")
+        confirm_email = cleaned_data.get("confirm_email")
+
+        if email != confirm_email:
+            raise forms.ValidationError("Email and Confirm Email do not match.")
+
+        return cleaned_data
+
+    def save(self, commit=True):
+        booking = super().save(commit=False)
+
+        # Auto-fill based on selected flight
+        flight = booking.flight
+        booking.trip_type = 'round' if flight.is_round_trip else 'single'

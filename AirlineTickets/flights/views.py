@@ -34,5 +34,5 @@ def flight_delete(request, pk):
 
 def flight_detail(request, pk):
     flight = get_object_or_404(Flights, pk=pk)
-    return render(request, 'views_flight.html', {'flights': flights})
+    return render(request, 'views_flight.html', {'flights': flight})
 

@@ -9,3 +9,6 @@ class FlightForm(forms.ModelForm):
             'departure_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'arrival_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
         }
+
+
+
