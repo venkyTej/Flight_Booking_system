@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'airport',
     'flights',
     'booking',
+    'payments'
 ]
 
 MIDDLEWARE = [
@@ -59,7 +60,7 @@ ROOT_URLCONF = 'AirlineTickets.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['D:/Django-Airline_Project/airlinetickets/airport/templates/'],  # Correct syntax
+        'DIRS': ['D:/Django-Airline_Project/airlinetickets/airport/templates/'],  
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

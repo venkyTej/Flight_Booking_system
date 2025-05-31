@@ -11,28 +11,27 @@ def booking_create(request):
             booking = form.save(commit=False)
             booking.flight_price = booking.flight.price
             booking.save()
-            return redirect('booking:booking_success', booking_id=booking.id)
+            return redirect('booking:booking_success', booking.id)  # Using default id
     else:
         form = BookingForm()
-    return render(request, 'booking/booking_form.html', {'form': form})
+    return render(request, 'booking/create.html', {'form': form})
 
 def book_flight(request):
     if request.method == 'POST':
         form = BookingForm(request.POST)
         if form.is_valid():
             booking = form.save(commit=False)
-            booking.flight_price = booking.flight.price  # auto-fill price
+            booking.flight_price = booking.flight.price
             booking.total_price = booking.flight.price * booking.num_seats
             booking.save()
-            return redirect('booking_success')
+            return redirect('booking:booking_success', booking.id)
     else:
         form = BookingForm()
-    return render(request, 'flight_booking_form.html', {'form': form})
+    return render(request, 'booking/booking_form.html', {'form': form})
 
-
-def booking_success(request, booking_id):
-    booking = get_object_or_404(Booking, id=booking_id)
-    return render(request, 'booking_success.html', {'booking': booking})
+def booking_success(request, id):  # Changed to id
+    booking = get_object_or_404(Booking, id=id)
+    return render(request, 'booking/booking_success.html', {'booking': booking})
 
 def get_flight_price(request):
     flight_id = request.GET.get('flight_id')
@@ -46,15 +45,15 @@ def get_flight_price(request):
 
 def booking_list(request):
     bookings = Booking.objects.all().order_by('-booked_at')
-    return render(request, 'booking_list.html', {'bookings': bookings})
+    return render(request, 'booking/booking_list.html', {'bookings': bookings})
 
-def booking_detail(request, booking_id):
-    booking = get_object_or_404(Booking, id=booking_id)
-    return render(request, 'booking_detail.html', {'booking': booking})
+def booking_detail(request, id):  # Changed to id
+    booking = get_object_or_404(Booking, id=id)
+    return render(request, 'booking/booking_detail.html', {'booking': booking})
 
-def cancel_booking(request, booking_id):
-    booking = get_object_or_404(Booking, id=booking_id)
+def cancel_booking(request, id):  # Changed to id
+    booking = get_object_or_404(Booking, id=id)
     if request.method == 'POST':
         booking.delete()
         return redirect('booking:booking_list')
-    return render(request, 'cancel_booking_confirm.html', {'booking': booking})
+    return render(request, 'booking/cancel_booking_confirm.html', {'booking': booking})
