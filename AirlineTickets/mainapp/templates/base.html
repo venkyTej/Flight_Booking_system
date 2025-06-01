@@ -25,8 +25,8 @@
                 <h1 class="h4 m-0">Airline Ticket Reservation</h1>
             </div>
             <nav>
-    <a href="" class="btn btn-outline-light me-2">Login</a>
-    <a href="" class="btn btn-outline-light me-2">Sign Up</a>
+    <a href="{% url 'signin' %}" class="btn btn-outline-light me-2">Login</a>
+    <a href="{% url 'signup' %}" class="btn btn-outline-light me-2">Sign Up</a>
 
     <a href="{% url 'flights:list' %}" class="btn btn-light">Flights</a>
     <a href="{% url 'booking:booking_create' %}" class="btn btn-light">Booking</a>

@@ -10,9 +10,9 @@ urlpatterns = [
     path('', RedirectView.as_view(url='/airport/', permanent=False)),
     path('flights/', include('flights.urls', namespace='flights')),# flights 
     path('booking/', include('booking.urls')),
-        
-
-
+    
+    path('',include('authentication.urls')),#authentications
+    
     
  
 ]

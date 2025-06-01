@@ -12,7 +12,7 @@ def airport_list(request):
 
 def airport_create(request):
     if request.method == 'POST':
-        form = AirportForm(request.POST)
+        form = AirportForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('airport:airport_list')

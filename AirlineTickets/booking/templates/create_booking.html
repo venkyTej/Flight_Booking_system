@@ -38,9 +38,9 @@
                         <a href="#" class="btn btn-success btn-lg mb-2">
                             <i class="fas fa-credit-card"></i> Pay Now
                         </a>
-                        <a href="{% url 'cancel_booking' booking.id %}" class="btn btn-danger btn-lg">
-                            <i class="fas fa-times-circle"></i> Cancel Booking
-                        </a>
+                        <a href="{% url 'booking:cancel_booking' booking.id %}" class="btn btn-danger btn-lg">
+                        <i class="fas fa-times-circle"></i> Cancel Booking
+                              </a>
                     </div>
                 </div>
             </div>
