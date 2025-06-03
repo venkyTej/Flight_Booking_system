@@ -21,6 +21,7 @@
         <p><strong>Contact:</strong> {{ airport.contact }}</p>
         <p><strong>Terminals:</strong> {{ airport.terminals }}</p>
         <p><small>Created: {{ airport.created_at|date:"F d, Y, g:i a" }}</small></p>
+         
 
         <!-- Edit & Delete Buttons -->
         <a href="{% url 'airport:edit_airport' airport.id %}" 

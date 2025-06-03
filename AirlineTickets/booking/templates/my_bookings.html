@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">My Bookings</h2>
+    
+    {% if bookings %}
+        <div class="row">
+            {% for booking in bookings %}
+                <div class="col-md-6">
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            Booking Reference: {{ booking.booking_reference }}
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ booking.passenger_name }}</h5>
+                            <p><strong>Contact:</strong> {{ booking.contact_number }}</p>
+                            <p><strong>Flight:</strong> {{ booking.flight.name }}</p>
+                            <p><strong>From:</strong> {{ booking.departure_place }}</p>
+                            <p><strong>To:</strong> {{ booking.arrival_place }}</p>
+                            <p><strong>Departure:</strong> {{ booking.departure_time|date:"M d, Y H:i" }}</p>
+                            <p><strong>Seats:</strong> {{ booking.num_seats }}</p>
+                            <p><strong>Total Price:</strong> ₹{{ booking.flight_price|floatformat:2 }}</p>
+
+                            <a href="{% url 'booking:booking_confirmation' booking_reference=booking.booking_reference %}" class="btn btn-outline-info mt-2">
+                                View Details
+                            </a>
+                            <a href="{% url 'booking:cancel_booking' booking_reference=booking.booking_reference %}" class="btn btn-danger mt-2 ml-2">
+                                Cancel Booking
+                            </a>
+                        </div>
+                        <div class="card-footer text-muted">
+                            Booked on {{ booking.booking_date|date:"M d, Y H:i" }}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-warning" role="alert">
+            No bookings found.
+        </div>
+    {% endif %}
+
+    <a href="{% url 'booking:book' %}" class="btn btn-success mt-3">
+        Book Another Flight
+    </a>
+</div>
+{% endblock %}

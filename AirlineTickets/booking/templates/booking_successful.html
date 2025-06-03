@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <div class="card text-center">
+        <div class="card-header bg-success text-white">
+            <h3 class="mb-0">Booking Successful!</h3>
+        </div>
+        <div class="card-body">
+            <i class="fas fa-check-circle fa-4x text-success mb-3"></i>
+            <p class="lead">Your flight has been booked successfully. Please check your email for confirmation and payment instructions.</p>
+
+            <a href="{% url 'booking:my_bookings' %}" class="btn btn-primary mt-3">
+                <i class="fas fa-list"></i> View My Bookings
+            </a>
+            <a href="{% url 'flight_list' %}" class="btn btn-secondary mt-3 ml-2">
+                <i class="fas fa-search"></i> Book Another Flight
+            </a>
+        </div>
+        <div class="card-footer text-muted">
+            Thank you for choosing SkyHigh Airways!
+        </div>
+    </div>
+</div>
+{% endblock %}

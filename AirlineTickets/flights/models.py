@@ -1,5 +1,6 @@
 
 from django.db import models
+from airport.models import Airport
 
 class Flights(models.Model):
     STATUS_CHOICES = [
@@ -8,13 +9,17 @@ class Flights(models.Model):
         ('Cancelled', 'Cancelled'),
     ]
 
+    CATEGORY = [
+        ('economy', 'economy'),
+        ('business', 'business')
+    ]
     name = models.CharField(max_length=100)
     flight_number = models.CharField(max_length=20)
     airline = models.CharField(max_length=100)
-    departure_city = models.CharField(max_length=100)
-    arrival_city = models.CharField(max_length=100)
-    departure_time = models.DateTimeField()
-    arrival_time = models.DateTimeField()
+    departure_city = models.ForeignKey(Airport, on_delete=models.CASCADE, related_name='flight_dep_airport')
+    arrival_city = models.ForeignKey(Airport, on_delete=models.CASCADE, related_name='flight_arr_airport')
+    departure_time = models.CharField()
+    arrival_time = models.CharField()
     duration = models.CharField(max_length=20, blank=True)  # Optional/manual
     price = models.DecimalField(max_digits=10, decimal_places=2)
     seat_capacity = models.PositiveIntegerField(default=180)
@@ -23,7 +28,7 @@ class Flights(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Scheduled')
     image = models.ImageField(upload_to='flight_images/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    category = models.CharField(max_length=50, default='Economy')  # or add choices if needed
+    category = models.CharField(max_length=50, choices=CATEGORY)  # or add choices if needed
 
     def __str__(self):
         return f"{self.flight_number} - {self.name}"
