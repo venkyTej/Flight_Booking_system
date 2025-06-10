@@ -7,11 +7,13 @@ from django.views.generic import RedirectView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('airport.urls')),  # note singular 'airport/'
-    path('', RedirectView.as_view(url='/airport/', permanent=False)),
+    # path('', RedirectView.as_view(url='/airport/', permanent=False)),
     path('flights/', include('flights.urls', namespace='flights')),# flights 
     path('booking/', include('booking.urls')),
+    path('payments/', include('payments.urls')),
     
-    path('',include('authentication.urls')),#authentications
+    path('accounts/',include('authentication.urls')),#authentications
+    path('accounts/', include('django.contrib.auth.urls'))
     
     
  

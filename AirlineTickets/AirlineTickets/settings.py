@@ -138,3 +138,25 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_URL = 'signin'
+
+
+# RAZORPAY configs-----
+  
+
+RAZORPAY_KEY_ID = "rzp_test_yVaCkW7eETP4Gn" # this is razorpay KEY-ID
+RAZORPAY_KEY_SECRET = "eimyDEYls5SDwsuAyHjOxDYZ" # this is razorpay KEY-SECERET
+
+CSRF_TRUSTEED_ORIGINS = [
+    "https://api.razorpay.com" #here added razorpay domain's
+]
+
+ 
+TIME_ZONE = 'Asia/Kolkata'  # Change to your local time zone
+USE_TZ = True
+

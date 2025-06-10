@@ -4,25 +4,8 @@
 <div class="container mt-5">
     <h2 class="mb-4 text-center">Book Your Flight Ticket</h2>
 
-    <form method="post" enctype="multipart/form-data">
+    <form method="post">
         {% csrf_token %}
-
-        <!-- Show form errors -->
-        {% if form.errors %}
-            <div class="alert alert-danger">
-                <ul>
-                    {% for field in form %}
-                        {% for error in field.errors %}
-                            <li><strong>{{ field.label }}:</strong> {{ error }}</li>
-                        {% endfor %}
-                    {% endfor %}
-                    {% for error in form.non_field_errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endif %}
-
         <div class="row">
             <!-- Passenger Information -->
             <div class="col-md-6">
@@ -66,11 +49,34 @@
                             <label for="id_flight">Select Flight:</label>
                             {{ form.flight }}
                         </div>
-                         
-                       
-                        
 
-                    
+                        <!-- Arrival -->
+                        <div class="form-group mb-3">
+                            <label for="arrival">Arrival:</label>
+                            <input type="text" id="arrival" class="form-control" readonly>
+                            <input type="hidden" name="arrival" id="arrival_hidden">
+                        </div>
+
+                        <!-- Departure -->
+                        <div class="form-group mb-3">
+                            <label for="departure">Departure:</label>
+                            <input type="text" id="departure" class="form-control" readonly>
+                            <input type="hidden" name="departure" id="departure_hidden">
+                        </div>
+
+                        <!-- Flight Price (Per Seat) -->
+                        <div class="form-group mb-3">
+                            <label for="flight_price">Flight Price (per seat):</label>
+                            <input type="text" id="flight_price" class="form-control" readonly>
+                            <input type="hidden" name="flight_price" id="flight_price_hidden">
+                        </div>
+
+                        <!-- Total Price -->
+                        <div class="form-group mb-3">
+                            <label for="total_price">Total Price:</label>
+                            <input type="text" id="total_price" class="form-control" readonly>
+                            <input type="hidden" name="total_price" id="total_price_hidden">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -78,10 +84,80 @@
 
         <!-- Submit -->
         <div class="text-center mt-4">
-            <button type="submit" class="btn btn-success btn-lg">confirm  Booking</button>
+            <button type="submit" class="btn btn-success btn-lg">Confirm Booking</button>
         </div>
     </form>
 </div>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const flightSelect = document.getElementById("id_flight");
+        const numSeatsInput = document.getElementById("id_num_seats");
+        const arrivalInput = document.getElementById("arrival");
+        const arrivalHidden = document.getElementById("arrival_hidden");
+        const departureInput = document.getElementById("departure");
+        const departureHidden = document.getElementById("departure_hidden");
+        const flightPriceInput = document.getElementById("flight_price");
+        const flightPriceHidden = document.getElementById("flight_price_hidden");
+        const totalPriceInput = document.getElementById("total_price");
+        const totalPriceHidden = document.getElementById("total_price_hidden");
 
+        const flightData = {
+            {% for flight in flights %}
+                "{{ flight.id }}": {
+                    arrival: "{{ flight.arrival_place|escapejs }}",
+                    departure: "{{ flight.departure_place|escapejs }}",
+                    price: "{{ flight.price }}"
+                }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        };
+
+        function updateFlightDetails() {
+            const selectedFlightId = flightSelect.value;
+            const data = flightData[selectedFlightId];
+            console.log(data)
+            if (data) {
+                arrivalInput.value = data.arrival;
+                arrivalHidden.value = data.arrival;
+
+                departureInput.value = data.departure;
+                departureHidden.value = data.departure;
+
+                flightPriceInput.value = data.price;
+                flightPriceHidden.value = data.price;
+            } else {
+                arrivalInput.value = "";
+                arrivalHidden.value = "";
+
+                departureInput.value = "";
+                departureHidden.value = "";
+
+                flightPriceInput.value = "";
+                flightPriceHidden.value = "";
+            }
+            updateTotalPrice();
+        }
+
+        function updateTotalPrice() {
+            const selectedFlightId = flightSelect.value;
+            const data = flightData[selectedFlightId];
+            const numSeats = parseInt(numSeatsInput.value) || 1;
+
+            if (data) {
+                const pricePerSeat = parseFloat(data.price);
+                const total = pricePerSeat * numSeats;
+                totalPriceInput.value = total.toFixed(2);
+                totalPriceHidden.value = total.toFixed(2);
+            } else {
+                totalPriceInput.value = "";
+                totalPriceHidden.value = "";
+            }
+        }
+
+        flightSelect.addEventListener("change", updateFlightDetails);
+        numSeatsInput.addEventListener("input", updateTotalPrice);
+
+        updateFlightDetails();  // initialize values on page load
+    });
+</script>
 {% endblock %}
